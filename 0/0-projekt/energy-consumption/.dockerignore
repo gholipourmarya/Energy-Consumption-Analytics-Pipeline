@@ -1,0 +1,9 @@
+.git
+.venv
+output
+**/__pycache__
+dbt/target
+dbt/logs
+.agents
+.aws
+.codex

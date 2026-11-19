@@ -1,0 +1,83 @@
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: Streaming quality
+    folder: Energy Operations
+    interval: 1m
+    rules:
+      - uid: energy-reject-rate
+        title: Rejection rate above 10%
+        condition: B
+        for: 2m
+        noDataState: OK
+        execErrState: Error
+        annotations:
+          summary: More than 10% of meter messages processed in the last 24 hours were rejected.
+        data:
+          - refId: A
+            datasourceUid: energy-postgres
+            relativeTimeRange: {from: 86400, to: 0}
+            model:
+              datasource: {type: grafana-postgresql-datasource, uid: energy-postgres}
+              refId: A
+              editorMode: code
+              rawQuery: true
+              format: time_series
+              rawSql: |
+                select current_timestamp as time,
+                       sum(rejected)::double precision /
+                           nullif(sum(accepted + rejected + duplicates), 0) as rate
+                from analytics.stream_quality
+                where recorded_at >= current_timestamp - interval '24 hours'
+                having count(*) > 0
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: {from: 0, to: 0}
+            model:
+              datasource: {type: __expr__, uid: __expr__}
+              refId: B
+              type: classic_conditions
+              conditions:
+                - evaluator: {type: gt, params: [0.10]}
+                  operator: {type: and}
+                  query: {params: [A]}
+                  reducer: {type: last, params: []}
+                  type: query
+      - uid: energy-duplicate-rate
+        title: Duplicate rate above 5%
+        condition: B
+        for: 2m
+        noDataState: OK
+        execErrState: Error
+        annotations:
+          summary: More than 5% of meter messages processed in the last 24 hours were duplicates.
+        data:
+          - refId: A
+            datasourceUid: energy-postgres
+            relativeTimeRange: {from: 86400, to: 0}
+            model:
+              datasource: {type: grafana-postgresql-datasource, uid: energy-postgres}
+              refId: A
+              editorMode: code
+              rawQuery: true
+              format: time_series
+              rawSql: |
+                select current_timestamp as time,
+                       sum(duplicates)::double precision /
+                           nullif(sum(accepted + rejected + duplicates), 0) as rate
+                from analytics.stream_quality
+                where recorded_at >= current_timestamp - interval '24 hours'
+                having count(*) > 0
+          - refId: B
+            datasourceUid: __expr__
+            relativeTimeRange: {from: 0, to: 0}
+            model:
+              datasource: {type: __expr__, uid: __expr__}
+              refId: B
+              type: classic_conditions
+              conditions:
+                - evaluator: {type: gt, params: [0.05]}
+                  operator: {type: and}
+                  query: {params: [A]}
+                  reducer: {type: last, params: []}
+                  type: query
