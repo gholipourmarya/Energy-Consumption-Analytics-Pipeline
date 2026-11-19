@@ -1,3 +1,0 @@
-dbt-core==1.11.11
-dbt-postgres==1.10.0
-psycopg[binary]==3.3.4

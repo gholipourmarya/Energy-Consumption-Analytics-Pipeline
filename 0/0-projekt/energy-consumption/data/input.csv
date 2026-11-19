@@ -1,5 +1,0 @@
-reading_id,meter_id,date,consumption_kwh
-R1,M1,2026-01-01,8.2
-R2,M1,2026-01-02,11.3
-R3,M2,2026-01-01,42.5
-R4,M2,2026-01-02,-1
