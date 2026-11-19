@@ -1,0 +1,14 @@
+[
+  {
+    "group": "M1",
+    "records": 2,
+    "total_value": 19.5,
+    "flags": 0
+  },
+  {
+    "group": "M2",
+    "records": 1,
+    "total_value": 42.5,
+    "flags": 1
+  }
+]

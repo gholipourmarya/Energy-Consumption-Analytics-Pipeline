@@ -1,0 +1,11 @@
+[
+  {
+    "row": {
+      "reading_id": "R4",
+      "meter_id": "M2",
+      "date": "2026-01-02",
+      "consumption_kwh": "-1"
+    },
+    "reason": "Invalid row: negative consumption"
+  }
+]

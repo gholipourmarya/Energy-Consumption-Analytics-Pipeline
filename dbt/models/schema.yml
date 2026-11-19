@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  - name: stream
+    schema: public
+    tables:
+      - name: readings
+      - name: quality_batches
+
+models:
+  - name: stg_readings
+    columns:
+      - name: reading_id
+        data_tests: [unique, not_null]
+      - name: meter_id
+        data_tests: [not_null]
+      - name: reading_date
+        data_tests: [not_null]
+      - name: consumption_kwh
+        data_tests: [not_null]
+      - name: high_consumption
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+                quote: false
+  - name: daily_consumption
+    columns:
+      - name: reading_date
+        data_tests: [unique, not_null]
+      - name: total_kwh
+        data_tests: [not_null]

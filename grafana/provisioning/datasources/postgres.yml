@@ -1,0 +1,16 @@
+apiVersion: 1
+datasources:
+  - name: Energy PostgreSQL
+    uid: energy-postgres
+    type: postgres
+    url: postgres:5432
+    user: energy_grafana
+    isDefault: true
+    editable: false
+    jsonData:
+      database: $ENERGY_PG_DATABASE
+      sslmode: disable
+      postgresVersion: 1700
+      timescaledb: false
+    secureJsonData:
+      password: $ENERGY_GRAFANA_DB_PASSWORD
